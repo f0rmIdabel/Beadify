@@ -1,0 +1,56 @@
+Unnamed: 0,name,code,R,G,B,available
+0,White,H01,236,237,237,1
+1,Cream,H02,240,232,185,0
+2,Yellow,H03,240,185,1,1
+3,Orange,H04,230,79,39,0
+4,Red,H05,182,49,54,0
+5,Pink,H06,225,136,159,0
+6,Purple,H07,105,74,130,1
+7,Blue,H08,44,70,144,0
+8,Light blue,H09,48,92,176,0
+9,Green,H10,37,104,71,0
+10,Light green,H11,73,174,137,0
+11,Brown,H12,83,65,55,1
+12,Translucent red,H13,192,36,53,0
+13,Translucent green,H16,55,184,118,0
+14,Grey,H17,131,136,138,1
+15,Black,H18,46,47,49,1
+16,Clear,H19,216,210,206,0
+17,Reddish brown,H20,127,51,42,1
+18,Light brown,H21,165,105,63,1
+19,Dark red,H22,165,45,54,0
+20,Translucent purple,H24,104,62,154,0
+21,Translucent brown,H25,135,89,61,0
+22,Flesh,H26,222,155,144,0
+23,Beige,H27,222,180,139,1
+24,Dark green,H28,54,63,56,0
+25,Claret,H29,185,57,94,1
+26,Burgundy,H30,89,47,56,1
+27,Turquoise,H31,103,151,174,1
+28,Neon fuchsia,H32,255,32,141,0
+29,Fluorescent cerise,H33,255,57,86,0
+30,Neon yellow,H34,229,239,19,0
+31,Neon red,H35,255,40,51,0
+32,Neon blue,H36,35,83,176,0
+33,Neon green,H37,6,183,60,0
+34,Neon orange,H38,253,134,0,0
+35,Fluorescent yellow,H39,241,242,28,0
+36,Fluorescent orange,H40,254,99,11,0
+37,Fluroescent blue,H41,38,89,178,0
+38,Fluorescent green,H42,12,189,81,0
+39,Pastel yellow,H43,240,234,55,0
+40,Pastel red,H44,238,105,114,0
+41,Pastel purple,H45,136,109,185,0
+42,Pastel blue,H46,98,158,215,0
+43,Pastel green,H47,131,203,112,0
+44,Pastel pink,H48,207,112,183,0
+45,Azure,H49,73,152,188,0
+46,Teddybear brown,H60,244,148,34,0
+47,Light grey,H70,180,185,188,1
+48,Dark grey,H71,64,64,64,1
+49,Tan,H75,200,171,147,1
+50,Nougat,H76,140,100,75,1
+51,Plum,H84,161,48,83,1
+52,Olive green,H86,124,137,52,1
+53,Pastel lilac,H96,254,194,244,1
+54,Pastel ice blue,H97,147,200,212,1
