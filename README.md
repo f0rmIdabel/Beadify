@@ -1,5 +1,3 @@
-For christmas, I want to make beaded versions of existing photos of my friends and family. The generous among them will think it's charming. The rest will act like it is. Either way, I get away with it, mohaha...
-
 A very simple tool for modifying a photo and converting it into a pegboard pattern.
 
 You need to specify:
