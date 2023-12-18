@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../src')
+sys.path.append('C:/Beadify/src')
 from beadify import *
 
 def get_configuration():
@@ -40,9 +40,55 @@ if __name__ == "__main__":
     image_resized.save('../out/image_resized.png')
 
     image_recolored, beads_needed = change_colors(image_resized, pegboard_dimension)
+    #image_recolored, beads_needed = switch_colors(image_recolored, beads_needed, 'H02', 'H18')
     image_recolored.save('../out/image_recolored.png')
+    
+    colors = pd.read_csv('../src/colors.csv')
+    #print(colors.head())
+    
+    
+    for i in range(29*4):
+        print("\nR"+str(i+1)+"|  ", end=' ')
+        
+        # First pixel in row 
+        r,g,b = image_recolored.getpixel((i, 0))
+        r_prev, g_prev, b_prev = r,g,b 
+        count = 1        
+    
+        for j in range(1, 29*4-1):
+            r,g,b = image_recolored.getpixel((i, j))
 
-    image_color_switch, beads_needed = switch_colors(image_recolored, beads_needed, 'H76', 'H75')
-    image_color_switch.save('../out/image_color_switch.png')
+            if (r,g,b) == (r_prev, g_prev, b_prev):
+                count += 1
+            else:
+                color = colors[(colors['R'] == r_prev) & (colors['G'] == g_prev) & (colors['B'] == b_prev)]["name"].values[0]
+                print(str(count) + "-" + color + " ", end=' ')
+                
+                count = 1
+    
+            #if (j+1) % 29 == 0:
+             #   print(" || ",end="")
+        
+                
+            r_prev, g_prev, b_prev = r,g,b 
+            
+        # Edge 
+        r,g,b = image_recolored.getpixel((i,29-1))
+        
+        if (r,g,b) == (r_prev, g_prev, b_prev):
+            count += 1
+            color = colors[(colors['R'] == r) & (colors['G'] == g) & (colors['B'] == b)]["name"].values[0]
+            print(str(count) + "-" + color + " ", end=' ')
+            
+        else:
+            color = colors[(colors['R'] == r_prev) & (colors['G'] == g_prev) & (colors['B'] == b_prev)]["name"].values[0]
+            print(str(count) + "-" + color + " ", end=' ')
+            color = colors[(colors['R'] == r) & (colors['G'] == g) & (colors['B'] == b)]["name"].values[0]
+            count = 1
+            print(str(count) + "-" + color + " ", end=' ')
+        
+    
+    #image_color_switch, beads_needed = switch_colors(image_recolored, beads_needed, 'H07', 'H12')
+    #image_color_switch.save('../out/image_color_switch.png')
 
     print(beads_needed[['name','code','quantity']].sort_values(by='quantity', ascending=False))

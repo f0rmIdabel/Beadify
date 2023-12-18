@@ -3,20 +3,25 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-def update_colors(available_colors):
+def update_colors(available_colors, all=False):
     """
     Update the availble status of colors
     based on input from the config file.
     """
 
     colors = pd.read_csv('../src/colors.csv')
-    available = np.zeros(len(colors), dtype=np.int8)
 
-    possible_colors = colors['code']
+    if all:
+        available = np.ones(len(colors), dtype=np.int8)
 
-    for i, color in enumerate(possible_colors):
-        if color in available_colors:
-            available[i] = 1
+    else:
+        available = np.zeros(len(colors), dtype=np.int8)
+        possible_colors = colors['code']
+
+        for i, color in enumerate(possible_colors):
+            if color in available_colors:
+                available[i] = 1
+
 
     colors['available'] = available
     colors.to_csv('../src/colors.csv', index=False)
@@ -33,7 +38,7 @@ def change_resolution(image_path, pegboard_dimension):
     image.convert("RGB")
     return image
 
-def change_colors(image, pegboard_dimension, method='euclidean'):
+def change_colors(image, pegboard_dimension, method='perception'):
     """
     Change RGB values to closest available bead colors.
     """
@@ -84,9 +89,11 @@ def change_colors(image, pegboard_dimension, method='euclidean'):
     image_recolored = Image.new(image.mode,image.size)
     image_recolored.putdata(new_RGB)
     image_recolored = image_recolored.rotate(-90)
+	
+	
     return image_recolored, beads_needed
 
-def switch_colors(image, beads_needed,col, new_col):
+def switch_colors(image, beads_needed, col, new_col):
 
     colors = pd.read_csv('../src/colors.csv')
     color = colors[colors['code'] == col].reset_index()
@@ -95,14 +102,16 @@ def switch_colors(image, beads_needed,col, new_col):
     q = beads_needed[beads_needed['code']==col]['quantity'].values[0]
     q2 = beads_needed[beads_needed['code']==new_col]['quantity'].values[0]
 
-    beads_needed.at[beads_needed['code']==col, 'quantity'] = 0
-    beads_needed.at[beads_needed['code']==new_col, 'quantity'] = q + q2
+    beads_needed.loc[beads_needed['code']==col, 'quantity'] = 0
+    beads_needed.loc[beads_needed['code']==new_col, 'quantity'] = q + q2
 
     data = np.array(image)
-    red, green, blue, _ = data.T
-
+    red, green, blue = data.T
+    
     area = (red == color['R'][0]) & (green == color['G'][0]) & (blue == color['B'][0])
-    data[..., :-1][area.T] = (new_color['R'][0], new_color['G'][0], new_color['B'][0]) # Transpose back needed
+
+    #print(data.shape); exit()
+    data[area.T] = (new_color['R'][0], new_color['G'][0], new_color['B'][0]) # Transpose back needed
 
     image = Image.fromarray(data)
     return image, beads_needed
