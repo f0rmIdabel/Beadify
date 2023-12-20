@@ -40,7 +40,9 @@ if __name__ == "__main__":
     image_resized.save('../out/image_resized.png')
 
     image_recolored, beads_needed = change_colors(image_resized, pegboard_dimension)
-    #image_recolored, beads_needed = switch_colors(image_recolored, beads_needed, 'H02', 'H18')
+
+
+    #image_recolored, beads_needed = switch_colors(image_recolored, beads_needed, 'H12', 'H18', 17,40)
     image_recolored.save('../out/image_recolored.png')
     
     colors = pd.read_csv('../src/colors.csv')
@@ -86,9 +88,5 @@ if __name__ == "__main__":
             color = colors[(colors['R'] == r) & (colors['G'] == g) & (colors['B'] == b)]["name"].values[0]
             count = 1
             print(str(count) + "-" + color + " ", end=' ')
-        
-    
-    #image_color_switch, beads_needed = switch_colors(image_recolored, beads_needed, 'H07', 'H12')
-    #image_color_switch.save('../out/image_color_switch.png')
 
     print(beads_needed[['name','code','quantity']].sort_values(by='quantity', ascending=False))

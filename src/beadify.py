@@ -38,7 +38,7 @@ def change_resolution(image_path, pegboard_dimension):
     image.convert("RGB")
     return image
 
-def change_colors(image, pegboard_dimension, method='perception'):
+def change_colors(image, pegboard_dimension, method='euclidean'):
     """
     Change RGB values to closest available bead colors.
     """
@@ -93,7 +93,7 @@ def change_colors(image, pegboard_dimension, method='perception'):
 	
     return image_recolored, beads_needed
 
-def switch_colors(image, beads_needed, col, new_col):
+def switch_colors(image, beads_needed, col, new_col, y_max=None, x_max=None, y_min=None, x_min=None):
 
     colors = pd.read_csv('../src/colors.csv')
     color = colors[colors['code'] == col].reset_index()
@@ -102,16 +102,31 @@ def switch_colors(image, beads_needed, col, new_col):
     q = beads_needed[beads_needed['code']==col]['quantity'].values[0]
     q2 = beads_needed[beads_needed['code']==new_col]['quantity'].values[0]
 
-    beads_needed.loc[beads_needed['code']==col, 'quantity'] = 0
-    beads_needed.loc[beads_needed['code']==new_col, 'quantity'] = q + q2
-
     data = np.array(image)
     red, green, blue = data.T
     
     area = (red == color['R'][0]) & (green == color['G'][0]) & (blue == color['B'][0])
 
-    #print(data.shape); exit()
-    data[area.T] = (new_color['R'][0], new_color['G'][0], new_color['B'][0]) # Transpose back needed
+    if y_max is None:
+        y_max = data.shape[0]
+    if x_max is None:
+        x_max = data.shape[1]
+    if y_min is None:
+        y_min = 0
+    if x_min is None:
+        x_min = 0
+
+    boolarr = np.zeros(data.shape[:2], dtype=bool)
+    boolarr[y_min:y_max,x_min:x_max] = True
+
+    area = area.T * boolarr
+    q3 = np.sum(area)
+
+    data[area] = (new_color['R'][0], new_color['G'][0], new_color['B'][0]) # Transpose back needed
+
+
+    beads_needed.loc[beads_needed['code']==col, 'quantity'] = q - q3
+    beads_needed.loc[beads_needed['code']==new_col, 'quantity'] =  q2 + q3
 
     image = Image.fromarray(data)
     return image, beads_needed
